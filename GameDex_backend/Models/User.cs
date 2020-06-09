@@ -11,5 +11,6 @@ namespace GameDex_backend.Models
         public string Password { get; set; }
         public DateTime RegisterDate { get; set; }
         public int[] FavGames { get; set; }
+        public string Auth_token { get; set; }
     }
 }
