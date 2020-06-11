@@ -80,10 +80,19 @@ namespace GameDex_backend.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            bool auth = false;
+            await foreach (User _user in _context.Users) {
+                if (user.Username == _user.Username && user.Password == _user.Password) {
+                    user.Auth_token = user.GenerateAuthToken();
+                    auth = true;
+                    break;
+                }
+            }
+            user.Auth_token = user.GenerateAuthToken();
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            //return CreatedAtAction("GetUser", new { id = user.Id }, (UserResponse)user);
+            return new JsonResult((UserResponse)new UserResponse{ Username= user.Username, Id=user.Id, Auth_token=user.Auth_token });
         }
 
         // DELETE: api/Users/5
