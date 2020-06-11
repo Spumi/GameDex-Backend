@@ -10,13 +10,14 @@ namespace GameDex_backend.Models
     {
         public User() {
             RegisterDate = DateTime.Now;
+            FavGames = new List<Favourite>();
         }
 
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public DateTime RegisterDate { get; set; }
-        //public List<string> FavGames { get; set; }
+        public List<Favourite> FavGames { get; set; }
         public string Auth_token { get; set; }
 
         internal string GenerateAuthToken()

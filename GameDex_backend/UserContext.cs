@@ -16,6 +16,8 @@ namespace GameDex_backend
         }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<GameDex_backend.Models.Favourite> Favourite { get; set; }
     }
 }
 
