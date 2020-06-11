@@ -16,9 +16,12 @@ namespace GameDex_backend
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddDbContext<UserContext>(opt =>
                opt.UseInMemoryDatabase("UserList"));
             services.AddControllers();
@@ -35,6 +38,10 @@ namespace GameDex_backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(
+                 options => options.WithOrigins("http://localhost:3000").AllowAnyHeader()
+              ) ;
 
             app.UseAuthorization();
 
