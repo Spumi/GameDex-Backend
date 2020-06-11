@@ -7,29 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameDex_backend;
 using GameDex_backend.Models;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace GameDex_backend.Controllers
 {
-    [Route("api/users")]
+    [Route("api/login")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly UserContext _context;
 
-        public UsersController(UserContext context)
+        public LoginController(UserContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Login
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Login/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -43,7 +43,7 @@ namespace GameDex_backend.Controllers
             return user;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Login/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -75,22 +75,34 @@ namespace GameDex_backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Login
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [EnableCors]
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            
-            user.Auth_token = user.GenerateAuthToken();
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            //return CreatedAtAction("GetUser", new { id = user.Id }, (UserResponse)user);
-            return new JsonResult((UserResponse)new UserResponse{ Username= user.Username, Id=user.Id, Auth_token=user.Auth_token });
+            bool auth = false;
+            User loginUser = null;
+            await foreach (User _user in _context.Users)
+            {
+                if (user.Username == _user.Username && user.Password == _user.Password)
+                {
+                    user.Auth_token = user.GenerateAuthToken();
+                    auth = true;
+                    loginUser = _user;
+                    break;
+                    
+                }
+            }
+            //_context.Users.Add(user);
+            //await _context.SaveChangesAsync();
+            if (auth)
+                return new JsonResult(new UserResponse { Username = loginUser.Username, Id = loginUser.Id, Auth_token = loginUser.Auth_token });
+            else
+                return new JsonResult(new UserResponse { Username = null, Id = 0, Auth_token = null  });
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Login/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
