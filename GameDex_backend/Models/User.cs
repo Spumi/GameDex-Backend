@@ -9,8 +9,7 @@ namespace GameDex_backend.Models
     public class User
     {
         public User() {
-            //this.FavGames = new List<string>();
-
+            RegisterDate = DateTime.Now;
         }
 
         public int Id { get; set; }
