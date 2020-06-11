@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameDex_backend;
 using GameDex_backend.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace GameDex_backend.Controllers
 {
@@ -77,6 +78,7 @@ namespace GameDex_backend.Controllers
         // POST: api/Users
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [EnableCors]
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
