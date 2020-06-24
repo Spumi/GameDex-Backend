@@ -84,14 +84,14 @@ namespace GameDex_backend.Controllers
             User user = _context.Users.Include(p => p.FavGames).FirstOrDefault();
             _context.Attach(user);
             if (user.Auth_token == favourite.Auth_token)
-            {               
+            {
             }
-            
+
             _context.Entry(user).Collection(e => e.FavGames).IsModified = true;
-            
+
             _context.Entry(user).State = EntityState.Modified;
             _context.Users.Update(user).Entity.FavGames.Add(favourite);
-            
+
             await _context.SaveChangesAsync();
 
             return new JsonResult(user) ;

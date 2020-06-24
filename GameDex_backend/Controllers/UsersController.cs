@@ -84,7 +84,7 @@ namespace GameDex_backend.Controllers
         {
             if (!_context.Users.Any(x => x.Username == user.Username))
             {
-             
+
                 _context.Users.Add(user);
             }
             await _context.SaveChangesAsync();
