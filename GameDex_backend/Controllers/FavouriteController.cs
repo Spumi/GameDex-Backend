@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameDex_backend;
 using GameDex_backend.Models;
+using System.Diagnostics;
 
 namespace GameDex_backend.Controllers
 {
@@ -32,15 +33,15 @@ namespace GameDex_backend.Controllers
         [HttpGet("{userid}")]
         public async Task<ActionResult<Favourite>> GetFavourite(int userid)
         {
-            var user = await _context.Users.FindAsync(userid);
-            var favourite = user.FavGames;
+            var user = await _context.Users.Include(u => u.FavGames).Where(x => x.Id == userid).SingleOrDefaultAsync();
+            
 
-            if (favourite == null)
+            if (user == null)
             {
                 return NotFound();
             }
-
-            return Ok(favourite);
+            
+            return Ok(user.FavGames);
         }
 
         // PUT: api/Favourite/5
