@@ -29,17 +29,18 @@ namespace GameDex_backend.Controllers
         }
 
         // GET: api/Favourite/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Favourite>> GetFavourite(int id)
+        [HttpGet("{userid}")]
+        public async Task<ActionResult<Favourite>> GetFavourite(int userid)
         {
-            var favourite = await _context.Favourite.FindAsync(id);
+            var user = await _context.Users.FindAsync(userid);
+            var favourite = user.FavGames;
 
             if (favourite == null)
             {
                 return NotFound();
             }
 
-            return favourite;
+            return Ok(favourite);
         }
 
         // PUT: api/Favourite/5
@@ -81,7 +82,8 @@ namespace GameDex_backend.Controllers
         public async Task<ActionResult<Favourite>> PostFavourite(Favourite favourite)
         {
             _context.Attach(favourite);
-            User user = _context.Users.Include(p => p.FavGames).FirstOrDefault();
+            //User user = _context.Users.Include(p => p.FavGames).FirstOrDefault();
+            User user = _context.Users.Where(u => u.Id == favourite.UserId).Include(p => p.FavGames).FirstOrDefault();
             _context.Attach(user);
             if (user.Auth_token == favourite.Auth_token)
             {               
