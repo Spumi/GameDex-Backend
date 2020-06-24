@@ -18,6 +18,10 @@ namespace GameDex_backend
         public DbSet<User> Users { get; set; }
 
         public DbSet<GameDex_backend.Models.Favourite> Favourite { get; set; }
+
+        public DbSet<GameDex_backend.Models.FavouritePublisher> FavouritePublisher { get; set; }
+
+        public DbSet<GameDex_backend.Models.FavouriteDeveloper> FavouriteDeveloper { get; set; }
     }
 }
 
