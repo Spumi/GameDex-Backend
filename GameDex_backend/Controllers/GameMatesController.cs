@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameDex_backend;
 using GameDex_backend.Models;
 
 namespace GameDex_backend.Controllers
 {
-    public class GameMatesController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GameMatesController : ControllerBase
     {
         private readonly UserContext _context;
 
@@ -19,130 +21,87 @@ namespace GameDex_backend.Controllers
             _context = context;
         }
 
-        // GET: GameMates
-        public async Task<IActionResult> Index()
+        // GET: api/GameMates
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<GameMate>>> GetGameMate()
         {
-            return View(await _context.GameMate.ToListAsync());
+            return await _context.GameMate.ToListAsync();
         }
 
-        // GET: GameMates/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/GameMates/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GameMate>> GetGameMate(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var gameMate = await _context.GameMate
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (gameMate == null)
-            {
-                return NotFound();
-            }
-
-            return View(gameMate);
-        }
-
-        // GET: GameMates/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: GameMates/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,IsAccepted")] GameMate gameMate)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(gameMate);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(gameMate);
-        }
-
-        // GET: GameMates/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var gameMate = await _context.GameMate.FindAsync(id);
+
             if (gameMate == null)
             {
                 return NotFound();
             }
-            return View(gameMate);
+
+            return gameMate;
         }
 
-        // POST: GameMates/Edit/5
+        // PUT: api/GameMates/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,IsAccepted")] GameMate gameMate)
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutGameMate(int id, GameMate gameMate)
         {
             if (id != gameMate.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(gameMate).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(gameMate);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!GameMateExists(gameMate.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                gameMate.IsAccepted = true;
+                await _context.SaveChangesAsync();
             }
-            return View(gameMate);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameMateExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: GameMates/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/GameMates
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<GameMate>> PostGameMate(GameMate gameMate)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            gameMate.IsAccepted = false;
+            _context.GameMate.Add(gameMate);
+            await _context.SaveChangesAsync();
 
-            var gameMate = await _context.GameMate
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return CreatedAtAction("GetGameMate", new { id = gameMate.Id }, gameMate);
+        }
+
+        // DELETE: api/GameMates/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<GameMate>> DeleteGameMate(int id)
+        {
+            var gameMate = await _context.GameMate.FindAsync(id);
             if (gameMate == null)
             {
                 return NotFound();
             }
 
-            return View(gameMate);
-        }
-
-        // POST: GameMates/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var gameMate = await _context.GameMate.FindAsync(id);
             _context.GameMate.Remove(gameMate);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return gameMate;
         }
 
         private bool GameMateExists(int id)
