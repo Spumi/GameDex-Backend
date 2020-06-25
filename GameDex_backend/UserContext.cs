@@ -24,6 +24,9 @@ namespace GameDex_backend
         public DbSet<GameDex_backend.Models.FavouriteDeveloper> FavouriteDeveloper { get; set; }
 
         public DbSet<GameDex_backend.Models.GameMate> GameMate { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlite("Data Source=gamedex.db");
     }
 }
 
