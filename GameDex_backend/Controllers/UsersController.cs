@@ -26,7 +26,13 @@ namespace GameDex_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var res = this._context.Users
+                .Include(u => u.FavGames)
+                .Include(u => u.FavPublishers)
+                .Include(u => u.FavDeveloper)
+                .ToListAsync();
+            //return await _context.Users.ToListAsync();
+            return await res;
         }
 
         // GET: api/Users/5

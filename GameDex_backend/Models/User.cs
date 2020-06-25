@@ -11,6 +11,8 @@ namespace GameDex_backend.Models
         public User() {
             RegisterDate = DateTime.Now;
             FavGames = new List<Favourite>();
+            FavPublishers = new List<FavouritePublisher>();
+            FavDeveloper = new List<FavouriteDeveloper>();
             GameMates = new List<GameMate>();
         }
 
@@ -19,6 +21,8 @@ namespace GameDex_backend.Models
         public string Password { get; set; }
         public DateTime RegisterDate { get; set; }
         public List<Favourite> FavGames { get; set; }
+        public List<FavouritePublisher> FavPublishers { get; set; }
+        public List<FavouriteDeveloper> FavDeveloper { get; set; }
         public string Auth_token { get; set; }
         public List<GameMate> GameMates { get; set; }
 
