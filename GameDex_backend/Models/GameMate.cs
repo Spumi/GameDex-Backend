@@ -11,6 +11,7 @@ namespace GameDex_backend.Models
         public int Id { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
+        public int FriendId { get; set; }
         public bool IsAccepted { get; set; }
     }
 }

@@ -58,6 +58,12 @@ namespace GameDex_backend.Controllers
             try
             {
                 gameMate.IsAccepted = true;
+                User user = await _context.Users.Include(m => m.GameMates).Where(m => m.Id == id).FirstOrDefaultAsync();
+                User friend = await _context.Users.Include(m => m.GameMates).Where(m => m.Id == gameMate.UserId).FirstOrDefaultAsync();
+                var friendRequest = user.GameMates.Find(m => m.UserId == gameMate.UserId);
+                friendRequest.IsAccepted = true;
+                friend.GameMates.Add(new GameMate() { UserId = user.Id, IsAccepted = true});
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

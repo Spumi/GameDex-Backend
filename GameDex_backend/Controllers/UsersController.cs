@@ -30,6 +30,7 @@ namespace GameDex_backend.Controllers
                 .Include(u => u.FavGames)
                 .Include(u => u.FavPublishers)
                 .Include(u => u.FavDeveloper)
+                .Include(u => u.GameMates)
                 .ToListAsync();
             //return await _context.Users.ToListAsync();
             return await res;
