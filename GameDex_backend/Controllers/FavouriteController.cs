@@ -78,7 +78,6 @@ namespace GameDex_backend.Controllers
         public async Task<ActionResult<Favourite>> PostFavourite(Favourite favourite)
         {
             _context.Attach(favourite);
-            //User user = _context.Users.Include(p => p.FavGames).FirstOrDefault();
             User user = _context.Users.Where(u => u.Id == favourite.UserId).Include(p => p.FavGames).FirstOrDefault();
             _context.Attach(user);
             if (user.Auth_token == favourite.Auth_token)

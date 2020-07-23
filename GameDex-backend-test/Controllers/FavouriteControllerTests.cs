@@ -7,6 +7,8 @@ using GameDex_backend_test;
 using Microsoft.EntityFrameworkCore;
 using GameDex_backend.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace GameDex_backend.Controllers.Tests
 {
@@ -25,17 +27,12 @@ namespace GameDex_backend.Controllers.Tests
             context = new UserContext(options);
         }
 
-        [Test()]
-        public void FavouriteControllerTest()
-        {
-
-            Assert.Fail();
-        }
 
         [Test()]
         public void GetFavouriteTest()
         {
-
+            context.Database.EnsureDeleted();
+            context.SaveChanges();
             FavouriteController fav = new FavouriteController(context);
             var item = new Models.Favourite { FavId = 1, UserId = 1 };
             context.Users.Add(new User { Id = 1, Username = "asd" });
@@ -43,32 +40,70 @@ namespace GameDex_backend.Controllers.Tests
             fav.PostFavourite(item);
             var res = fav.GetFavourite();
 
-            TestContext.Out.WriteLine(fav.GetFavourite(1).Result.Value);
+            TestContext.Out.WriteLine(context.Users.FirstOrDefault());
             Assert.AreEqual(item, res.Result.Value.First());
         }
+        
+        [Test()]
+        public void GetFavouriteTest2()
+        {
+            context.Database.EnsureDeleted();
+            
+            FavouriteController fav = new FavouriteController(context);
+            var item = new Models.Favourite { FavId = 1, UserId = 1 };
+            context.Users.Add(new User { Id = 1, Username = "lajos" });
+            context.SaveChanges();
+            fav.PostFavourite(item);
+            var res = fav.GetFavourite();
+
+            TestContext.Out.WriteLine(context.Users.FirstOrDefault());
+            Assert.AreEqual(item, res.Result.Value.First());
+        }
+
 
         [Test()]
         public void GetFavouriteTest1()
         {
-            Assert.Fail();
+            context.Database.EnsureDeleted();
+            context.SaveChanges();
+            FavouriteController fav = new FavouriteController(context);
+
+            context.Users.Add(new User { Id = 1, Username = "asd" });
+            context.SaveChanges();
+
+            var item = new Models.Favourite { FavId = 1, UserId = 1 };
+            var item2 = new Models.Favourite { FavId = 2, UserId = 1 };
+            fav.PostFavourite(item);
+            fav.PostFavourite(item2);
+
+            Assert.AreEqual(new List<Favourite>(){ item, item2}, fav.GetFavourite().Result.Value.ToList());
         }
 
-        [Test()]
-        public void PutFavouriteTest()
-        {
-            Assert.Fail();
-        }
 
         [Test()]
         public void PostFavouriteTest()
         {
-            Assert.Fail();
+            context.Users.RemoveRange(context.Users);
+
+            context.Users.RemoveRange(context.Users);
+            context.SaveChanges();
+
+           
+            FavouriteController fav = new FavouriteController(context);
+
+            var user = new User { Id = 1, Username = "asd" };
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            var item = new Favourite { FavId = 1, UserId = 1 };
+            //user.FavGames.Add(item);
+            var res = fav.PostFavourite(item).Result.Result;
+            var expected = new JsonResult(user);
+
+            TestContext.Out.WriteLine(expected.Value);
+            Assert.AreEqual(expected,  res);
         }
 
-        [Test()]
-        public void DeleteFavouriteTest()
-        {
-            Assert.Fail();
-        }
+
     }
 }
