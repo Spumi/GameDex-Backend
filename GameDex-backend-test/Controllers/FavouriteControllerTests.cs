@@ -27,12 +27,6 @@ namespace GameDex_backend.Controllers.Tests
             context = new UserContext(options);
         }
 
-        [Test()]
-        public void FavouriteControllerTest()
-        {
-            
-            Assert.Fail();
-        }
 
         [Test()]
         public void GetFavouriteTest()
@@ -85,11 +79,6 @@ namespace GameDex_backend.Controllers.Tests
             Assert.AreEqual(new List<Favourite>(){ item, item2}, fav.GetFavourite().Result.Value.ToList());
         }
 
-        [Test()]
-        public void PutFavouriteTest()
-        {
-            Assert.Fail();
-        }
 
         [Test()]
         public void PostFavouriteTest()
@@ -120,10 +109,5 @@ namespace GameDex_backend.Controllers.Tests
         }
 
 
-        [Test()]
-        public void DeleteFavouriteTest()
-        {
-            Assert.Fail();
-        }
     }
 }
