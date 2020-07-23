@@ -28,21 +28,21 @@ namespace GameDex_backend.Controllers.Tests
         [Test()]
         public void FavouriteControllerTest()
         {
-            
+
             Assert.Fail();
         }
 
         [Test()]
         public void GetFavouriteTest()
         {
-           
+
             FavouriteController fav = new FavouriteController(context);
             var item = new Models.Favourite { FavId = 1, UserId = 1 };
             context.Users.Add(new User { Id = 1, Username = "asd" });
             context.SaveChanges();
             fav.PostFavourite(item);
             var res = fav.GetFavourite();
-            
+
             TestContext.Out.WriteLine(fav.GetFavourite(1).Result.Value);
             Assert.AreEqual(item, res.Result.Value.First());
         }
