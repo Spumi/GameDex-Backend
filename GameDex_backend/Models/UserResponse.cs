@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GameDex_backend.Models
+﻿namespace GameDex_backend.Models
 {
     public class UserResponse
     {

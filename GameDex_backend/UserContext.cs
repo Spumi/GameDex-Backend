@@ -1,10 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GameDex_backend.Models;
-
+﻿using GameDex_backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameDex_backend
 {
@@ -27,4 +22,3 @@ namespace GameDex_backend
         //    => options.UseSqlite("Data Source=blogging.db");
     }
 }
-

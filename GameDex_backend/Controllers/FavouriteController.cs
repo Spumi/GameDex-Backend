@@ -1,13 +1,9 @@
-﻿using System;
+﻿using GameDex_backend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GameDex_backend;
-using GameDex_backend.Models;
-using System.Diagnostics;
 
 namespace GameDex_backend.Controllers
 {
@@ -34,13 +30,12 @@ namespace GameDex_backend.Controllers
         public async Task<ActionResult<Favourite>> GetFavourite(int userid)
         {
             var user = await _context.Users.Include(u => u.FavGames).Where(x => x.Id == userid).SingleOrDefaultAsync();
-            
 
             if (user == null)
             {
                 return NotFound();
             }
-            
+
             return Ok(user.FavGames);
         }
 
@@ -86,17 +81,17 @@ namespace GameDex_backend.Controllers
             User user = _context.Users.Where(u => u.Id == favourite.UserId).Include(p => p.FavGames).FirstOrDefault();
             _context.Attach(user);
             if (user.Auth_token == favourite.Auth_token)
-            {               
+            {
             }
-            
+
             _context.Entry(user).Collection(e => e.FavGames).IsModified = true;
-            
+
             _context.Entry(user).State = EntityState.Modified;
             _context.Users.Update(user).Entity.FavGames.Add(favourite);
-            
+
             await _context.SaveChangesAsync();
 
-            return new JsonResult(user) ;
+            return new JsonResult(user);
         }
 
         // DELETE: api/Favourite/5

@@ -43,12 +43,12 @@ namespace GameDex_backend.Controllers.Tests
             TestContext.Out.WriteLine(context.Users.FirstOrDefault());
             Assert.AreEqual(item, res.Result.Value.First());
         }
-        
+
         [Test()]
         public void GetFavouriteTest2()
         {
             context.Database.EnsureDeleted();
-            
+
             FavouriteController fav = new FavouriteController(context);
             var item = new Models.Favourite { FavId = 1, UserId = 1 };
             context.Users.Add(new User { Id = 1, Username = "lajos" });
@@ -88,7 +88,7 @@ namespace GameDex_backend.Controllers.Tests
             context.Users.RemoveRange(context.Users);
             context.SaveChanges();
 
-           
+
             FavouriteController fav = new FavouriteController(context);
 
             var user = new User { Id = 1, Username = "asd" };

@@ -1,12 +1,9 @@
-﻿using System;
+﻿using GameDex_backend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GameDex_backend;
-using GameDex_backend.Models;
 
 namespace GameDex_backend.Controllers
 {
@@ -34,13 +31,12 @@ namespace GameDex_backend.Controllers
         {
             var user = await _context.Users.Include(u => u.FavDeveloper).Where(x => x.Id == id).SingleOrDefaultAsync();
 
-
             if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(user.FavPublishers);
+            return Ok(user.FavDeveloper);
         }
 
         // PUT: api/FavouriteDevelopers/5
@@ -85,7 +81,7 @@ namespace GameDex_backend.Controllers
             _context.Attach(user);
             _context.FavouriteDeveloper.Add(favouriteDeveloper);
             _context.Users.Update(user).Entity.FavDeveloper.Add(favouriteDeveloper);
-            
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetFavouriteDeveloper", new { id = favouriteDeveloper.Id }, favouriteDeveloper);

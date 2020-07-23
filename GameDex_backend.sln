@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDex_backend", "GameDex_backend\GameDex_backend.csproj", "{A83D9DF6-3639-413B-AD0C-5DA00BAD0046}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDex-backend-test", "GameDex-backend-test\GameDex-backend-test.csproj", "{E76438A9-3C6E-4161-B06E-575CF108DCA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDex-backend-test", "GameDex-backend-test\GameDex-backend-test.csproj", "{E76438A9-3C6E-4161-B06E-575CF108DCA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

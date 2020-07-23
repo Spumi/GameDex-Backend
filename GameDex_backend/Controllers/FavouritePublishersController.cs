@@ -1,12 +1,9 @@
-﻿using System;
+﻿using GameDex_backend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GameDex_backend;
-using GameDex_backend.Models;
 
 namespace GameDex_backend.Controllers
 {
@@ -33,7 +30,6 @@ namespace GameDex_backend.Controllers
         public async Task<ActionResult<FavouritePublisher>> GetFavouritePublisher(int id)
         {
             var user = await _context.Users.Include(u => u.FavPublishers).Where(x => x.Id == id).SingleOrDefaultAsync();
-
 
             if (user == null)
             {

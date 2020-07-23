@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameDex_backend.Models
 {
     public class User
     {
-        public User() {
+        public User()
+        {
             RegisterDate = DateTime.Now;
             FavGames = new List<Favourite>();
             FavPublishers = new List<FavouritePublisher>();
