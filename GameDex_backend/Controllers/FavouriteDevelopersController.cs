@@ -36,7 +36,7 @@ namespace GameDex_backend.Controllers
                 return NotFound();
             }
 
-            return Ok(user.FavPublishers);
+            return Ok(user.FavDeveloper);
         }
 
         // PUT: api/FavouriteDevelopers/5
