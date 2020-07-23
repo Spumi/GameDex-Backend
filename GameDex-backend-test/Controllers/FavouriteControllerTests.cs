@@ -88,11 +88,7 @@ namespace GameDex_backend.Controllers.Tests
             context.Users.RemoveRange(context.Users);
             context.SaveChanges();
 
-            var options = new DbContextOptionsBuilder<UserContext>()
-               .UseInMemoryDatabase("fakeDb")
-               .Options;
-
-            context = new UserContext(options);
+           
             FavouriteController fav = new FavouriteController(context);
 
             var user = new User { Id = 1, Username = "asd" };
