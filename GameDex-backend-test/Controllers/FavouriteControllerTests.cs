@@ -13,6 +13,18 @@ namespace GameDex_backend.Controllers.Tests
     [TestFixture()]
     public class FavouriteControllerTests
     {
+        UserContext context;
+
+        [SetUp]
+        public void Setup()
+        {
+            var options = new DbContextOptionsBuilder<UserContext>()
+               .UseInMemoryDatabase("fakeDb")
+               .Options;
+
+            context = new UserContext(options);
+        }
+
         [Test()]
         public void FavouriteControllerTest()
         {
@@ -23,11 +35,7 @@ namespace GameDex_backend.Controllers.Tests
         [Test()]
         public void GetFavouriteTest()
         {
-            var options = new DbContextOptionsBuilder<UserContext>()
-                .UseInMemoryDatabase("fakeDb")
-                .Options;
-
-            var context = new UserContext(options);
+           
             FavouriteController fav = new FavouriteController(context);
             var item = new Models.Favourite { FavId = 1, UserId = 1 };
             context.Users.Add(new User { Id = 1, Username = "asd" });
