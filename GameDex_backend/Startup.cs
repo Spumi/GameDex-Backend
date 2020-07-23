@@ -31,7 +31,7 @@ namespace GameDex_backend
         {
             services.AddCors();
             services.AddDbContext<UserContext>(opt =>
-               opt.UseInMemoryDatabase("UserList"));
+               opt.UseSqlite("Data Source=gamedex.db"));
             services.AddControllers();
         }
 
