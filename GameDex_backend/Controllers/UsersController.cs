@@ -1,13 +1,10 @@
-﻿using System;
+﻿using GameDex_backend.Models;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GameDex_backend;
-using GameDex_backend.Models;
-using Microsoft.AspNetCore.Cors;
 
 namespace GameDex_backend.Controllers
 {
@@ -90,12 +87,11 @@ namespace GameDex_backend.Controllers
         {
             if (!_context.Users.Any(x => x.Username == user.Username))
             {
-             
                 _context.Users.Add(user);
             }
             await _context.SaveChangesAsync();
             //return CreatedAtAction("GetUser", new { id = user.Id }, (UserResponse)user);
-            return new JsonResult((UserResponse)new UserResponse{ Username= user.Username, Id=user.Id, Auth_token=user.Auth_token });
+            return new JsonResult((UserResponse)new UserResponse { Username = user.Username, Id = user.Id, Auth_token = user.Auth_token });
         }
 
         // DELETE: api/Users/5
