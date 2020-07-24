@@ -3,7 +3,6 @@ using GameDex_backend.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GameDex_backend_test;
 using Microsoft.EntityFrameworkCore;
 using GameDex_backend.Models;
 using System.Linq;
